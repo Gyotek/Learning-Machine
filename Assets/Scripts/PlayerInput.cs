@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
 
-    public CarController carController;
+    public CarControler carControler;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        carController.horizontalInput = Input.GetAxis("Horizontal");
-        carController.verticalInput = Input.GetAxis("Vertical");
+        carControler.horizontalInput = Input.GetAxis("Horizontal");
+        carControler.verticalInput = Input.GetAxis("Vertical");
     }
 }
