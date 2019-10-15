@@ -10,7 +10,7 @@ public class Checkpoint : MonoBehaviour
     {
         Agent agent = other.GetComponent<Agent>();
 
-        if (agent || agent.nextChexkpoint != transform)
+        if (agent || agent.nextCheckpoint != transform)
             return;
         agent.CheckpointReached(nextCheckpoint);
 
