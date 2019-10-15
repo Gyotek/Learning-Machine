@@ -90,21 +90,33 @@ public class NeuralNetwork
         }
     }
 
-    public void Mutate()
+    float randomNumber;
+    public void Mutate(float probability)
     {
-        for (x = 1; x < layers.Length; x++)
+        for (x = 0; x < axons.Length; x++)
         {
-            for (y = 0; y < layers[x]; y++)
+            for (y = 0; y < axons[x].Length; y++)
             {
-                for (z = 0; z < layers[x - 1]; z++)
+                for (z = 0; z < axons[x][y].Length; z++)
                 {
-                    if (Random.Range(1, 100) > 80)
-                    {
-                        axons[x][y][z] *= -1;
-                    }
+                    value = axons[x][y][z];
+
+                    randomNumber = Random.Range(0f, 100f);
+
+                    if (randomNumber < 0.06f * probability)
+                        value = Random.Range(-1f, 1f);
+                    else if (randomNumber < 0.07f * probability)
+                        value *= -1f;
+                    else if (randomNumber < 0.5f * probability)
+                        value += 0.1f * Random.Range(-1f, 1f);
+                    else if (randomNumber < 0.75f * probability)
+                        value *= 1 + Random.Range(0f, 1f);
+                    else if (randomNumber < 1f * probability)
+                        value *= Random.Range(0f, 1f);
+
+                    axons[x][y][z] = value;
                 }
             }
         }
-
     }
 }
