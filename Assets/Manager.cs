@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Manager : MonoBehaviour
     public float trainingDuration = 30;
 
     public int[] layer;
+
+    public int mutationRate = 8;
 
     public GameObject agentPrefab;
     public Transform agentGroup;
@@ -24,6 +27,7 @@ public class Manager : MonoBehaviour
     IEnumerator InitCoroutine()
     {
         NewGeneration();
+        Load();
         Focus();
 
         yield return new WaitForSeconds(trainingDuration);
@@ -41,10 +45,13 @@ public class Manager : MonoBehaviour
 
     void NewGeneration()
     {
-        agents.Sort();
         AddOrRemoveAgent();
+        agents.Sort();
+        Mutate();
+        ResetAgent();
+        SetColor();
     }
-
+    
     void AddOrRemoveAgent()
     {
         if (agents.Count == populationSize)
@@ -77,8 +84,88 @@ public class Manager : MonoBehaviour
         agents.RemoveAt(agents.Count - 1);
     }
 
+    private void Mutate()
+    {
+        for (int i = agents.Count/2; i < agents.Count; i++)
+        {
+            agents[i].net.CopyNet(agents[i-(agents.Count/2)].net);
+            agents[i].net.Mutate(mutationRate);
+        }
+    }
+
+    void ResetAgent()
+    {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            agents[i].ResetAgent();
+        }
+    }
+
+    public void Refocus()
+    {
+        agents.Sort();
+        Focus();
+    }
+
     void Focus()
     {
         CameraControler.instance.target = agents[0].transform;
+    }
+
+    public void Load()
+    {
+        Data data = DataManager.instance.Load();
+
+        if (data != null)
+            for (int i = 0; i < agents.Count; i++)
+            {
+                agents[i].net = data.nets[i];
+            }
+
+        StopAllCoroutines();
+        StartCoroutine(Loop());
+    }
+
+    [ContextMenu("Save")]
+    public void Save()
+    {
+        List<NeuralNetwork> nets = new List<NeuralNetwork>();
+
+        for (int i = 0; i < agents.Count; i++)
+        {
+            nets.Add(agents[i].net);
+        }
+
+        DataManager.instance.Save(nets);
+    }
+
+    void SetColor()
+    {
+        agents[0].SetFirstColor();
+
+        for (int i = 1; i < populationSize ; i++)
+        {
+            agents[i].SetDefaultColor();
+        }
+
+        for (int i = populationSize/2 ; i < populationSize; i++)
+        {
+            agents[i].SetMutateColor();
+        }
+    }
+
+    public void Restart()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Loop());
+    }
+
+    public void ResetNets()
+    {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            agents[i].net = new NeuralNetwork(agent.net.layers);
+        }
+        Restart();
     }
 }

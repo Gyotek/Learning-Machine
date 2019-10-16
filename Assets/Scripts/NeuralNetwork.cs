@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class NeuralNetwork
 {
     public int[] layers;
@@ -96,7 +97,7 @@ public class NeuralNetwork
 
                 for (z = 0; z < layers[x-1]; z++)
                 {
-                    value = neurons[x - 1][z]*axons[x-1][y][z];
+                    value += neurons[x - 1][z]*axons[x-1][y][z];
                 }
 
                 neurons[x][y] = (float)System.Math.Tanh(value);

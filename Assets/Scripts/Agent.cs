@@ -21,6 +21,13 @@ public class Agent : MonoBehaviour, IComparable<Agent>
 
     public Rigidbody rb;
 
+    public Material firstMat;
+    public Material mutateMat;
+    public Material defaultMat;
+
+    public Renderer render;
+    public Renderer posRenderer;
+
     private void Start()
     {
         Init();
@@ -99,11 +106,11 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     {
         pos = transform.position;
 
-        inputs[0] = RaySensor(pos + Vector3.up * 0.2f, transform.forward, 4f);
-        inputs[1] = RaySensor(pos + Vector3.up * 0.2f, transform.right, 1.5f);
-        inputs[2] = RaySensor(pos + Vector3.up * 0.2f, -transform.right, 1.5f);
-        inputs[3] = RaySensor(pos + Vector3.up * 0.2f, transform.right + transform.forward, 2f);
-        inputs[4] = RaySensor(pos + Vector3.up * 0.2f, -transform.right + transform.forward, 2f);
+        inputs[0] = RaySensor(pos + Vector3.up * 0.2f, transform.forward, 32f);
+        inputs[1] = RaySensor(pos + Vector3.up * 0.2f, transform.right, 12f);
+        inputs[2] = RaySensor(pos + Vector3.up * 0.2f, -transform.right, 12f);
+        inputs[3] = RaySensor(pos + Vector3.up * 0.2f, transform.right + transform.forward, 16f);
+        inputs[4] = RaySensor(pos + Vector3.up * 0.2f, -transform.right + transform.forward, 16f);
 
         inputs[5] = 1 - (float)Math.Tanh(rb.velocity.magnitude / 20);
 
@@ -156,7 +163,27 @@ public class Agent : MonoBehaviour, IComparable<Agent>
     {
         if (fitnesss < other.fitnesss)
             return 1;
+        else if (fitnesss > other.fitnesss)
+            return -1;
+        else
+            return 0;
+    }
 
-        return -1;
+    public void SetDefaultColor()
+    {
+        render.material = defaultMat;
+        posRenderer.material = defaultMat;
+    }
+
+    public void SetMutateColor()
+    {
+        render.material = mutateMat;
+        posRenderer.material = mutateMat;
+    }
+
+    public void SetFirstColor()
+    {
+        render.material = firstMat;
+        posRenderer.material = firstMat;
     }
 }

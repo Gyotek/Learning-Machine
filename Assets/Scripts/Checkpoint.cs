@@ -8,13 +8,12 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Agent agent = other.GetComponent<Agent>();
-
-        if (agent || agent.nextCheckpoint != transform)
-            return;
-        agent.CheckpointReached(nextCheckpoint);
-
-
-
+        if (other.GetComponent<Agent>())
+        {
+            if(other.GetComponent<Agent>().nextCheckpoint == transform)
+            {
+                other.GetComponent<Agent>().CheckpointReached(nextCheckpoint);
+            }
+        }
     }
 }
