@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Agent : MonoBehaviour
+public class Agent : MonoBehaviour, IComparable<Agent>
 {
     public NeuralNetwork net;
     public CarControler carControler;
@@ -150,5 +150,13 @@ public class Agent : MonoBehaviour
         
         Debug.DrawRay(pos, direction * hit.distance, Color.yellow);
         return (rayRange * length - hit.distance) / (rayRange * length);
+    }
+
+    public int CompareTo(Agent other)
+    {
+        if (fitnesss < other.fitnesss)
+            return 1;
+
+        return -1;
     }
 }
