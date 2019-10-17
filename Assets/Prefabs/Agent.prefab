@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSteerAngle: 84
-  motorForce: 800
+  motorForce: 8000
   frontDriverW: {fileID: 5962530539437593758}
   backDriverW: {fileID: 5962530539917506213}
   frontPassengerW: {fileID: 5962530538854761643}

@@ -27,6 +27,7 @@ public class Manager : MonoBehaviour
     IEnumerator InitCoroutine()
     {
         NewGeneration();
+        InitNeuralNetworkViewer();
         Load();
         Focus();
 
@@ -167,5 +168,10 @@ public class Manager : MonoBehaviour
             agents[i].net = new NeuralNetwork(agent.net.layers);
         }
         Restart();
+    }
+
+    void InitNeuralNetworkViewer()
+    {
+        NeuralNetworkViewer.instance.Init(agents[0]);
     }
 }
