@@ -113,18 +113,22 @@ public class Agent : MonoBehaviour, IComparable<Agent>
         inputs[4] = RaySensor(pos + Vector3.up * 0.2f, -transform.right + transform.forward, 16f);
 
         inputs[5] = 1 - (float)Math.Tanh(rb.velocity.magnitude / 20);
+        inputs[6] = (float)Math.Tanh(rb.angularVelocity.y * 0.1f);
 
+        /*
         distCheckpoint = DistCheckPoint();
         inputs[6] = (float)Math.Tanh((lastDistCheckpoint - distCheckpoint)*5);
-        inputs[7] = (float)Math.Tanh(rb.angularVelocity.z * 0.1f);
-
+        */
+        //inputs[7] = (float)Math.Tanh(rb.angularVelocity.z * 0.1f);
+        /*
         inputs[8] = (float)Math.Tanh(transform.InverseTransformDirection(ClosestPointToPointOnLigne(nextCheckpoint.position, nextCheckpoint.position + nextCheckpoint.forward, transform.position)).x);
         inputs[9] = (float)Math.Tanh(transform.InverseTransformDirection(ClosestPointToPointOnLigne(nextCheckpoint.position, nextCheckpoint.position + nextCheckpoint.forward, transform.position)).z);
+        */
 
-        inputs[10] = (float)Math.Tanh(rb.angularVelocity.y * 0.1f);
-
+        /*
         angleZ = transform.eulerAngles.z > 180 ? transform.eulerAngles.z - 360 : transform.eulerAngles.z;
         inputs[11] = (float)Math.Tanh(angleZ / 90f);
+        */
     }
 
     public void OutputUpdate()
