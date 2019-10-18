@@ -26,10 +26,10 @@ public class Manager : MonoBehaviour
     void Start()
     {
         StartCoroutine(InitCoroutine());
-
+        
         for (int i = 0; i < startPoints.childCount-1; i++)
         {
-            startPos[i] = startPoints.GetChild(i);
+            startPos.Add (startPoints.GetChild(i));
         }
     }
 
@@ -106,16 +106,20 @@ public class Manager : MonoBehaviour
     
     void AddAgent()
     {
-
-        agent = (Instantiate(agentPrefab, Vector3.zero, Quaternion.identity, agentGroup)).GetComponent<Agent>();
-        agent.net = new NeuralNetwork(layer);
-        agents.Add(agent);
-
-        if (ModeManager.instance.mode == ModeManager.Mode.Run)    //RUN MODE
+        if (ModeManager.instance.mode == ModeManager.Mode.Training)  //TRAINING MODE
+        {
+            agent = (Instantiate(agentPrefab, Vector3.zero, Quaternion.identity, agentGroup)).GetComponent<Agent>();
+            agent.net = new NeuralNetwork(layer);
+            agents.Add(agent);
+        }
+        else if (ModeManager.instance.mode == ModeManager.Mode.Run)    //RUN MODE
         {
             for (int i = 0; i < runPopulationSize; i++)
             {
-                agents[i].gameObject.transform.position = startPos[i].position;
+                agent = (Instantiate(agentPrefab, startPos[i].position, Quaternion.identity, agentGroup)).GetComponent<Agent>();
+                agent.net = new NeuralNetwork(layer);
+                agents.Add(agent);
+                //agents[i].gameObject.transform.position = startPos[i].position;
             }
         }
     }
@@ -139,7 +143,10 @@ public class Manager : MonoBehaviour
     {
         for (int i = 0; i < agents.Count; i++)
         {
-            agents[i].ResetAgent();
+            if (ModeManager.instance.mode == ModeManager.Mode.Training)   //TRAINING MODE
+                agents[i].ResetAgent(Vector3.zero);
+            else if (ModeManager.instance.mode == ModeManager.Mode.Run)  //RUN MODE
+                agents[i].ResetAgent(startPos[i].position);
         }
     }
 
@@ -187,16 +194,23 @@ public class Manager : MonoBehaviour
     void SetColor()
     {
         agents[0].SetFirstColor();
-
-        for (int i = 1; i < populationSize ; i++)
+        if (ModeManager.instance.mode == ModeManager.Mode.Training)          //TRAINING MODE
         {
-            agents[i].SetDefaultColor();
+            for (int i = 1; i < populationSize; i++)
+                agents[i].SetDefaultColor();
+
+            for (int i = populationSize / 2; i < populationSize; i++)
+                agents[i].SetMutateColor();
+        }
+        else if(ModeManager.instance.mode == ModeManager.Mode.Run)      //RUN MODE
+        {
+            for (int i = 1; i < runPopulationSize; i++)
+                agents[i].SetDefaultColor();
+
+            for (int i = runPopulationSize / 2; i < runPopulationSize; i++)
+                agents[i].SetMutateColor();
         }
 
-        for (int i = populationSize/2 ; i < populationSize; i++)
-        {
-            agents[i].SetMutateColor();
-        }
     }
 
     public void Restart()
@@ -211,6 +225,12 @@ public class Manager : MonoBehaviour
         {
             agents[i].net = new NeuralNetwork(agent.net.layers);
         }
+        Restart();
+    }
+
+    public void ResetMode()
+    {
+        ResetAgent();
         Restart();
     }
 
