@@ -5695,8 +5695,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   populationSize: 50
   runPopulationSize: 20
-  trainingDuration: 120
-  layer: 070000000e0000000e00000002000000
+  trainingDuration: 10
+  layer: 0b0000000e0000000e00000002000000
   mutationRate: 8
   agentPrefab: {fileID: 5962530539251394963, guid: eaaa912e4509b2c4bbe8e613b6557ac4,
     type: 3}

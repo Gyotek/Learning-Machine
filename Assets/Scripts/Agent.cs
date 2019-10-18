@@ -114,6 +114,10 @@ public class Agent : MonoBehaviour, IComparable<Agent>
 
         inputs[5] = 1 - (float)Math.Tanh(rb.velocity.magnitude / 20);
         inputs[6] = (float)Math.Tanh(rb.angularVelocity.y * 0.1f);
+        inputs[7] = (float)Math.Tanh(Manager.instance.AgentPosition(this));
+        inputs[8] = RaySensor(pos + Vector3.up * 0.2f, -transform.forward, 16f);
+        inputs[9] = RaySensor(pos + Vector3.up * 0.2f, transform.right + -transform.forward, 16f);
+        inputs[10] = RaySensor(pos + Vector3.up * 0.2f, -transform.right + -transform.forward, 16f);
 
         /*
         distCheckpoint = DistCheckPoint();
@@ -141,7 +145,7 @@ public class Agent : MonoBehaviour, IComparable<Agent>
 
     void UpdateFitness()
     {
-        SetFitness(distanceTraveled + (nextCheckpointDist - (transform.position - nextCheckpoint.position).magnitude));
+        SetFitness(distanceTraveled + (nextCheckpointDist - (transform.position - nextCheckpoint.position).magnitude));// * /*(float)Math.Tanh(*/Manager.instance.AgentPosition(this));
     }
 
     void SetFitness(float _newFitness)

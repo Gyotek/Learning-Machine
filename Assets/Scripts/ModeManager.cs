@@ -27,6 +27,7 @@ public class ModeManager : MonoBehaviour
             mode = Mode.Run;
             textMode.text = "Run Mode";
             textButton.text = "Switch to \n Training";
+
         }
         else if (mode == Mode.Run)
         {
@@ -34,7 +35,6 @@ public class ModeManager : MonoBehaviour
             textMode.text = "Training Mode";
             textButton.text = "Switch to \n Run";
         }
-
         Physics.IgnoreLayerCollision(9, 9, mode == Mode.Training);
     }
 }

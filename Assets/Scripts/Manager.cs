@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
+    public static Manager instance;
+    private void Awake() { instance = this; }
+
     public int populationSize = 50;
     public int runPopulationSize = 2;
-    public float trainingDuration = 30;
+    public float trainingDuration = 10;
 
     public int[] layer;
 
@@ -25,12 +28,12 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(InitCoroutine());
-        
-        for (int i = 0; i < startPoints.childCount-1; i++)
+        for (int i = 0; i < startPoints.childCount - 1; i++)
         {
-            startPos.Add (startPoints.GetChild(i));
+            startPos.Add(startPoints.GetChild(i));
         }
+
+        StartCoroutine(InitCoroutine());
     }
 
     IEnumerator InitCoroutine()
@@ -46,6 +49,7 @@ public class Manager : MonoBehaviour
 
     IEnumerator Loop()
     {
+
         NewGeneration();
         Focus();
 
@@ -88,7 +92,6 @@ public class Manager : MonoBehaviour
                 return;
 
             int dif = runPopulationSize - agents.Count;
-
             if (dif > 0)
                 for (int i = 0; i < dif; i++)
                 {
@@ -231,11 +234,24 @@ public class Manager : MonoBehaviour
     public void ResetMode()
     {
         ResetAgent();
-        Restart();
+        Load();
     }
 
     void InitNeuralNetworkViewer()
     {
         NeuralNetworkViewer.instance.Init(agents[0]);
+    }
+
+    public int AgentPosition(Agent _agent)
+    {
+        agents.Sort();
+        for (int i = 0; i < agents.Count; i++)
+        {
+            if (_agent == agents[i])
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 }
