@@ -5693,10 +5693,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2329de8f3b3d9ff49936819f0c635341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationSize: 50
+  populationSize: 100
   runPopulationSize: 20
-  trainingDuration: 10
-  layer: 0b0000000e0000000e00000002000000
+  trainingDuration: 60
+  layer: 070000000e0000000e00000002000000
   mutationRate: 8
   agentPrefab: {fileID: 5962530539251394963, guid: eaaa912e4509b2c4bbe8e613b6557ac4,
     type: 3}
